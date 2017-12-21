@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <description>第三方中间件的客户端</description>
+
+    <!-- Redis -->
+    <bean id="jedisClusterManager" class="com.laika.demoservice.client.JedisClusterManager"
+          init-method="init">
+        <property name="servers" value="192.168.12.51:7000,192.168.12.51:7001,192.168.12.51:7002"/>
+        <property name="timeout" value="2000"/>
+        <property name="maxRedirections" value="500"/>
+        <property name="maxTotal" value="500"/>
+        <property name="maxIdle" value="50"/>
+        <property name="minIdle" value="10"/>
+    </bean>
+
+
+    <!-- RabbitMQ -->
+    <bean id="connectionFactory" class="com.rabbitmq.client.ConnectionFactory">
+        <property name="automaticRecoveryEnabled" value="true"></property>
+        <property name="host" value="192.168.12.86"></property>
+        <property name="port" value="56720"></property>
+        <property name="username" value="baibei"></property>
+        <property name="password" value="baibei"></property>
+        <property name="virtualHost" value="/"></property>
+    </bean>
+
+    <!-- zookeeper -->
+    <bean id="zkConnector" class="com.laika.demoservice.client.ZooKeeperConnector"
+          init-method="connect" lazy-init="false">
+        <property name="hosts" value="192.168.12.86:2181"/>
+    </bean>
+
+</beans>
