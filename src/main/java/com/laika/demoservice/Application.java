@@ -17,10 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @ImportResource({"classpath:spring-config.xml"})
 @EnableAspectJAutoProxy
 public class Application {
+
     public static void main(String[] args) {
-        log.info("start execute Application...\n");
+//        log.info("start execute Application...\n");
         SpringApplication.run(Application.class, args);
-        log.info("end execute Application...\n");
+//        log.info("end execute Application...\n");
     }
 }
 

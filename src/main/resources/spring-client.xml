@@ -5,32 +5,39 @@
 
     <description>第三方中间件的客户端</description>
 
-    <!-- Redis -->
-    <bean id="jedisClusterManager" class="com.laika.demoservice.client.JedisClusterManager"
-          init-method="init">
-        <property name="servers" value="192.168.12.51:7000,192.168.12.51:7001,192.168.12.51:7002"/>
-        <property name="timeout" value="2000"/>
-        <property name="maxRedirections" value="500"/>
-        <property name="maxTotal" value="500"/>
-        <property name="maxIdle" value="50"/>
-        <property name="minIdle" value="10"/>
+    <!-- JedisPool -->
+    <bean name="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}"/>
+        <property name="maxTotal" value="${redis.maxTotal}"/>
+        <property name="minIdle" value="${redis.minIdle}"/>
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        <property name="testOnReturn" value="${redis.testOnReturn}"/>
     </bean>
 
+    <bean id="jedisPoolClient" class="com.laika.demoservice.client.JedisPoolClient"
+      destroy-method="destroy">
+        <property name="host" value="${redis.host}"/>
+        <property name="password" value="${redis.password}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="timeOut" value="${redis.timeout}"/>
+        <property name="jedisPoolConfig" ref="jedisPoolConfig"/>
+    </bean>
 
     <!-- RabbitMQ -->
-    <bean id="connectionFactory" class="com.rabbitmq.client.ConnectionFactory">
-        <property name="automaticRecoveryEnabled" value="true"></property>
-        <property name="host" value="192.168.12.86"></property>
-        <property name="port" value="56720"></property>
-        <property name="username" value="baibei"></property>
-        <property name="password" value="baibei"></property>
-        <property name="virtualHost" value="/"></property>
-    </bean>
+    <!--<bean id="connectionFactory" class="com.rabbitmq.client.ConnectionFactory">-->
+        <!--<property name="automaticRecoveryEnabled" value="true"></property>-->
+        <!--<property name="host" value="192.168.12.86"></property>-->
+        <!--<property name="port" value="56720"></property>-->
+        <!--<property name="username" value="baibei"></property>-->
+        <!--<property name="password" value="baibei"></property>-->
+        <!--<property name="virtualHost" value="/"></property>-->
+    <!--</bean>-->
 
     <!-- zookeeper -->
-    <bean id="zkConnector" class="com.laika.demoservice.client.ZooKeeperConnector"
-          init-method="connect" lazy-init="false">
-        <property name="hosts" value="192.168.12.86:2181"/>
-    </bean>
+    <!--<bean id="zkConnector" class="com.laika.demoservice.client.ZooKeeperConnector"-->
+          <!--init-method="connect" lazy-init="false">-->
+        <!--<property name="hosts" value="192.168.12.86:2181"/>-->
+    <!--</bean>-->
 
 </beans>

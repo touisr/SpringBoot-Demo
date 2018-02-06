@@ -1,5 +1,6 @@
 package com.laika.demoservice.client;
 
+import lombok.Data;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+@Data
 public class ZooKeeperConnector {
     private static Logger logger = LoggerFactory.getLogger(ZooKeeperConnector.class);
 

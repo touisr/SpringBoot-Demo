@@ -51,9 +51,9 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
         FastJsonHttpMessageConverter4 converter = new FastJsonHttpMessageConverter4();
         FastJsonConfig config = new FastJsonConfig();
         config.setSerializerFeatures(SerializerFeature.WriteMapNullValue,//保留空的字段
-                SerializerFeature.WriteNullStringAsEmpty,//String null -> ""
-                SerializerFeature.WriteNullNumberAsZero,//Number null -> 0
-                SerializerFeature.WriteDateUseDateFormat); //Date ->yyyy-MM-dd HH:mm:ss
+            SerializerFeature.WriteNullStringAsEmpty,//String null -> ""
+            SerializerFeature.WriteNullNumberAsZero,//Number null -> 0
+            SerializerFeature.WriteDateUseDateFormat); //Date ->yyyy-MM-dd HH:mm:ss
         converter.setFastJsonConfig(config);
         converter.setDefaultCharset(Charset.forName("UTF-8"));
         converters.add(converter);
@@ -62,16 +62,19 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 
     //统一异常处理
     @Override
-    public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+    public void configureHandlerExceptionResolvers(
+        List<HandlerExceptionResolver> exceptionResolvers) {
         exceptionResolvers.add(new HandlerExceptionResolver() {
             @Override
-            public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
+            public ModelAndView resolveException(HttpServletRequest request,
+                HttpServletResponse response, Object handler, Exception e) {
                 ApiResult result = null;
                 if (e instanceof ServiceException) {//业务失败的异常，如“账号或密码错误”
                     result = new ApiResult(ApiResultCodeMsg.FAIL.getCode(), e.getMessage());
                     log.info(e.getMessage());
                 } else if (e instanceof NoHandlerFoundException) {
-                    result = new ApiResult(ApiResultCodeMsg.NOT_FOUND.getCode(), "接口 [" + request.getRequestURI() + "] 不存在");
+                    result = new ApiResult(ApiResultCodeMsg.NOT_FOUND.getCode(),
+                        "接口 [" + request.getRequestURI() + "] 不存在");
                 } else if (e instanceof ServletException) {
                     result = new ApiResult(ApiResultCodeMsg.FAIL.getCode(), e.getMessage());
                 } else if (e instanceof BindException) { // @Valid参数校验异常
@@ -86,18 +89,20 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                         log.info(sb.toString());
                         // 取第一条校验失败的提示信息吧
                         ObjectError objectError = errors.get(0);
-                        result = new ApiResult(ApiResultCodeMsg.BAD_PARAMETER.getCode(), objectError.getDefaultMessage());
+                        result = new ApiResult(ApiResultCodeMsg.BAD_PARAMETER.getCode(),
+                            objectError.getDefaultMessage());
                     }
                 } else {
-                    result = new ApiResult(ApiResultCodeMsg.INTERNAL_SERVER_ERROR.getCode(), "接口 [" + request.getRequestURI() + "] 内部错误，请联系管理员");
+                    result = new ApiResult(ApiResultCodeMsg.INTERNAL_SERVER_ERROR.getCode(),
+                        "接口 [" + request.getRequestURI() + "] 内部错误，请联系管理员");
                     String message;
                     if (handler instanceof HandlerMethod) {
                         HandlerMethod handlerMethod = (HandlerMethod) handler;
                         message = String.format("接口 [%s] 出现异常，方法：%s.%s，异常摘要：%s",
-                                request.getRequestURI(),
-                                handlerMethod.getBean().getClass().getName(),
-                                handlerMethod.getMethod().getName(),
-                                e.getMessage());
+                            request.getRequestURI(),
+                            handlerMethod.getBean().getClass().getName(),
+                            handlerMethod.getMethod().getName(),
+                            e.getMessage());
                     } else {
                         message = e.getMessage();
                     }
@@ -121,7 +126,8 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new HandlerInterceptorAdapter() {
             @Override
-            public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+            public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                Object handler) throws Exception {
                 HandlerMethod handlerMethod = (HandlerMethod) handler;
                 // 请求方法没有添加UnAuthorization注解，则需要token鉴权
                 if (handlerMethod.getMethodAnnotation(UnAuthorization.class) == null) {
@@ -130,8 +136,10 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                         return true;
                     } else {
                         log.warn("鉴权失败，请求接口：{}，请求IP：{}，请求参数：{}",
-                                request.getRequestURI(), WebUtils.getIpAddress(request), JSON.toJSONString(request.getParameterMap()));
-                        ApiResult result = new ApiResult(ApiResultCodeMsg.UNAUTHORIZED.getCode(), ApiResultCodeMsg.UNAUTHORIZED.getMsg());
+                            request.getRequestURI(), WebUtils.getIpAddress(request),
+                            JSON.toJSONString(request.getParameterMap()));
+                        ApiResult result = new ApiResult(ApiResultCodeMsg.UNAUTHORIZED.getCode(),
+                            ApiResultCodeMsg.UNAUTHORIZED.getMsg());
                         responseResult(response, result);
                         return false;
                     }

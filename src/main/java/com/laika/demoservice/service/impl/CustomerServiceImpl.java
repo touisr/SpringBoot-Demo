@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 * @description: Customer服务实现
 */
 @Service
-@Transactional
+@Transactional(rollbackFor =  Exception.class)
 public class CustomerServiceImpl extends AbstractService<Customer> implements ICustomerService {
     @Resource
     private CustomerMapper tCustomerMapper;

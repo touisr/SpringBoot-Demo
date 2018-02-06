@@ -2,11 +2,7 @@
 
 <configuration debug="true" scan="true" scanPeriod="30 seconds">
     <!-- 日志目录路径变量 -->
-    <!--
-        <property name="LOG_DIR_PATH" value="/logs/guess-userService" />
-    -->
-    <property name="LOG_DIR_PATH" value="D://data//logs//guess-userService"/>
-
+        <property name="LOG_DIR_PATH" value="/data/logs/guess-userService" />
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -89,7 +85,6 @@
     <logger name="com.laika.demoservice.dao" level="debug" additivity="true">
         <appender-ref ref="DEBUG-OUT"/>
     </logger>
-
 
     <root level="info">
         <appender-ref ref="STDOUT"/>
