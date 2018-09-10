@@ -9,7 +9,7 @@
   <description>配置</description>
 
   <apollo:config/>
-  <apollo:config namespaces="guess.config.redis"/>
+  <apollo:config namespaces="guess.config.redis,guess.actuator"/>
 
   <import resource="spring-data.xml"/>
   <import resource="spring-client.xml"/>

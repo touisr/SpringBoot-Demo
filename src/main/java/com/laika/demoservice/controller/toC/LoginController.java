@@ -8,6 +8,7 @@ import com.laika.demoservice.model.Customer;
 import com.laika.demoservice.protocol.LoginReq;
 import com.laika.demoservice.protocol.LoginRes;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,9 +31,9 @@ public class LoginController extends BaseController {
      * @param loginReq
      * @return
      */
-    @PostMapping("/login")
+    @GetMapping("/login")
     @ResponseBody
-    public ApiResult login(@Valid LoginReq loginReq) {
+    public ApiResult login() {
 
 
         return ApiResultGenerator.success(LoginRes.buildByCustomer(new Customer()));
